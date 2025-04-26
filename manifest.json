@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "LaunchDarkly Helper",
+  "version": "1.0",
+  "description": "Store and apply user/org IDs to LaunchDarkly feature flag settings",
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "host_permissions": [
+    "https://app.launchdarkly.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "rizzlers/icon_16.png",
+      "32": "rizzlers/icon_32.png",
+      "48": "rizzlers/icon_48.png",
+      "128": "rizzlers/icon_128.png"
+    }
+  },
+  "icons": {
+    "16": "rizzlers/icon_16.png",
+    "32": "rizzlers/icon_32.png",
+    "48": "rizzlers/icon_48.png",
+    "128": "rizzlers/icon_128.png",
+    "256": "rizzlers/icon_256.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://app.launchdarkly.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

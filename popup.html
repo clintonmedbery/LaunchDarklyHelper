@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LaunchDarkly Helper</title>
+  <style>
+    :root {
+      --primary-color: #6E56CF;
+      --primary-dark: #4A30B9;
+      --delete-color: #E5484D;
+      --success-color: #30A46C;
+      --warning-color: #F76B15;
+      --dark-bg: #1A1523;
+      --darker-bg: #131019;
+      --card-bg: rgba(30, 25, 40, 0.75);
+      --border-color: rgba(120, 113, 146, 0.25);
+      --text-color: #ECE7FE;
+      --text-muted: #9E91E8;
+      --radius: 8px;
+    }
+    
+    body {
+      width: 370px;
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 0;
+      margin: 0;
+      background-color: var(--dark-bg);
+      color: var(--text-color);
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px;
+    }
+    
+    h2 {
+      color: var(--text-color);
+      font-weight: 600;
+    }
+    
+    .header-container {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+      text-align: center;
+    }
+    
+    h3 {
+      margin: 0 0 12px 0;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    
+    .tabs {
+      display: flex;
+      border-radius: var(--radius);
+      background-color: var(--darker-bg);
+      padding: 4px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: calc(var(--radius) - 4px);
+      transition: all 0.2s ease;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .tab.active {
+      background-color: var(--primary-color);
+      color: var(--text-color);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background-color: var(--card-bg);
+      margin-bottom: 8px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(8px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .entry:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    }
+    
+    input, button, select {
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      background-color: var(--darker-bg);
+      color: var(--text-color);
+      font-family: inherit;
+      margin: 4px 0;
+      transition: all 0.2s ease;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(110, 86, 207, 0.25);
+    }
+    
+    input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+    
+    button {
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    button:hover {
+      filter: brightness(1.1);
+    }
+    
+    button:active {
+      transform: translateY(1px);
+    }
+    
+    .entry-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .delete-btn {
+      background-color: var(--delete-color);
+      color: white;
+      border: none;
+      font-size: 13px;
+      padding: 6px 10px;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+      background-color: var(--card-bg);
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(8px);
+    }
+    
+    .save-btn {
+      background-color: var(--success-color);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-weight: 500;
+    }
+    
+    .apply-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      font-size: 13px;
+      padding: 6px 10px;
+    }
+    
+    .nav-btn {
+      background-color: var(--warning-color);
+      color: white;
+      border: none;
+    }
+    
+    .flag-navigation {
+      border-top: 1px solid var(--border-color);
+      margin-top: 8px;
+      background-color: var(--card-bg);
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(8px);
+      width: auto;
+      box-sizing: border-box;
+    }
+    
+    .flag-input-container {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+    }
+    
+    .flag-input-container input {
+      flex-grow: 1;
+      width: 100%;
+    }
+    
+    .recent-flags-container {
+      margin-top: 16px;
+    }
+    
+    .recent-flags-container select {
+      width: 100%;
+      background-color: var(--darker-bg);
+      color: var(--text-color);
+      max-height: 200px;
+      margin-bottom: 8px;
+    }
+    
+    .recent-flags-container select option {
+      padding: 8px;
+    }
+    
+    .recent-flags-container select option:hover,
+    .recent-flags-container select option:focus {
+      background-color: var(--primary-color);
+    }
+    
+    small {
+      color: var(--text-muted);
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: var(--darker-bg);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-container" style="display: flex; align-items: center; justify-content: center;">
+      <img src="rizzlers/icon_48.png" alt="LaunchDarkly Helper" style="margin-right: 12px; width: 32px; height: 32px;">
+      <h2 style="margin: 0;">LaunchDarkly Helper</h2>
+    </div>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="users">Users</div>
+      <div class="tab" data-tab="orgs">Organizations</div>
+      <div class="tab" data-tab="flags">Feature Flags</div>
+    </div>
+    
+    <!-- Users Tab -->
+    <div id="users" class="tab-content active">
+      <div id="user-list"></div>
+      
+      <div class="form-group">
+        <h3>Add New User</h3>
+        <input type="text" id="new-user-name" placeholder="User Name" />
+        <input type="text" id="new-user-id" placeholder="User ID" />
+        <button id="add-user" class="save-btn">Save</button>
+      </div>
+    </div>
+    
+    <!-- Organizations Tab -->
+    <div id="orgs" class="tab-content">
+      <div id="org-list"></div>
+      
+      <div class="form-group">
+        <h3>Add New Organization</h3>
+        <input type="text" id="new-org-name" placeholder="Organization Name" />
+        <input type="text" id="new-org-id" placeholder="Organization ID" />
+        <button id="add-org" class="save-btn">Save</button>
+      </div>
+    </div>
+    
+    <!-- Feature Flags Tab -->
+    <div id="flags" class="tab-content">
+      <div class="form-group">
+        <h3>Recent Flags</h3>
+        <select id="recent-flags-select" size="10" style="width: 100%; box-sizing: border-box;">
+          <!-- Populated by JavaScript -->
+        </select>
+        <div style="display: flex; width: 100%; gap: 8px; margin-top: 8px;">
+          <button id="go-to-selected-flag" class="nav-btn" style="flex: 1; min-width: 0;">Go to Selected</button>
+          <button id="clear-recent-flags" class="delete-btn" style="flex-shrink: 0;">Clear History</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Feature Flag Navigation -->
+    <div class="flag-navigation">
+      <h3>Quick Navigation</h3>
+      <div style="display: flex; width: 100%; gap: 8px;">
+        <input type="text" id="quick-flag-input" placeholder="Feature Flag Name" style="flex: 1; min-width: 0;" />
+        <button id="quick-go-to-flag" class="nav-btn" style="flex-shrink: 0;">Go</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
