@@ -1,6 +1,12 @@
 # LaunchDarkly Helper
 
-![LaunchDarkly Helper Icon](rizzlers/icon_256.png)
+<div align="center">
+  <img src="rizzlers/icon_256.png" alt="LaunchDarkly Helper Icon" width="128" height="128">
+</div>
+
+<div align="center">
+  <img src="screenshots/image.png" alt="LaunchDarkly Helper Screenshot" width="350">
+</div>
 
 A Chrome extension to streamline your LaunchDarkly workflow by managing user and organization IDs for feature flag targeting.
 
