@@ -161,6 +161,41 @@
       padding: 6px 10px;
     }
     
+    .copy-btn {
+      background-color: var(--darker-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    
+    .copy-btn:hover {
+      color: var(--text-color);
+      background-color: var(--primary-dark);
+    }
+    
+    .copy-notification {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 16px;
+      background-color: var(--success-color);
+      color: white;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    
+    .copy-notification.fade-out {
+      opacity: 0;
+    }
+    
     .form-group {
       margin-bottom: 16px;
       background-color: var(--card-bg);
